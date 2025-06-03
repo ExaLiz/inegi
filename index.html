@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Formulario INEGI - Necesidades</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f5f5f5;
+    }
+    .banner {
+      background-color: #00529b;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
+    .contenedor {
+      display: flex;
+      max-width: 1100px;
+      margin: 20px auto;
+      background: white;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      border-radius: 6px;
+      overflow: hidden;
+      min-height: 600px;
+    }
+    .publicidad {
+      flex: 1;
+      background-color: #eaeaea;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      align-items: center;
+      justify-content: center;
+    }
+    .publicidad img {
+      width: 100%;
+      max-width: 280px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      object-fit: cover;
+    }
+    .formulario-container {
+      flex: 2;
+      padding: 30px 40px;
+      overflow-y: auto;
+    }
+    h1, h2 {
+      color: #00529b;
+    }
+    form label {
+      display: block;
+      margin-top: 12px;
+      font-weight: bold;
+    }
+    form input[type="text"],
+    form input[type="date"],
+    form input[type="number"],
+    form input[type="file"],
+    form select {
+      width: 100%;
+      padding: 7px 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 1em;
+    }
+    #servicios-container label {
+      font-weight: normal;
+      margin-right: 15px;
+    }
+    button[type="submit"] {
+      margin-top: 25px;
+      background-color: #00529b;
+      color: white;
+      border: none;
+      padding: 12px 22px;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #003f70;
+    }
+    /* Scrollbar for the form container if needed */
+    .formulario-container {
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="banner">INEGI - Censo de Necesidades del Hogar</div>
+
+  <div class="contenedor">
+    <div class="publicidad">
+      <img src="img/iglesia.jpeg" alt="Publicidad 1" />
+      <img src="img/maguey3.jpeg" alt="Publicidad 2" />
+      <img src="img/noche.jpeg" alt="Publicidad 3" />
+    </div>
+
+    <div class="formulario-container">
+      <h1>Formulario de Necesidades del Hogar</h1>
+
+      <form id="formulario" enctype="multipart/form-data">
+        <!-- Aquí va todo tu formulario tal cual lo tienes -->
+        <!-- DATOS PERSONALES -->
+        <h2>Datos Personales</h2>
+        <label>Nombre completo:</label>
+        <input type="text" name="nombre" required />
+
+        <label>Fecha de nacimiento:</label>
+        <input type="date" name="fechaNacimiento" id="fechaNacimiento" required onchange="verificarEdad()" />
+
+        <div id="ineSection" style="display: none;">
+          <label>INE (PDF):</label>
+          <input type="file" name="ine" accept="application/pdf" />
+        </div>
+
+        <label>CURP (PDF):</label>
+        <input type="file" name="curp_pdf" accept="application/pdf" required />
+        <label>CURP (texto):</label>
+        <input type="text" name="curp_texto" required />
+
+        <label>Acta de nacimiento (PDF):</label>
+        <input type="file" name="acta" accept="application/pdf" required />
+
+        <!-- DIRECCIÓN -->
+        <h2>Dirección</h2>
+        <label>Código Postal:</label>
+        <input type="text" id="localidad" maxlength="5" required oninput="buscarCP()" />
+
+        <label>Ubicación:</label>
+        <input type="text" id="ubicacion" name="ubicacion" readonly />
+
+        <label>Calle:</label>
+        <input type="text" name="calle" required />
+        <label>Colonia o barrio:</label>
+        <input type="text" name="barrio" required />
+
+        <!-- SERVICIOS -->
+        <h2>Servicios disponibles</h2>
+        <div id="servicios-container">
+          <label><input type="checkbox" name="servicios" value="Agua Potable" onchange="verificarServicios()"> Agua Potable</label>
+          <label><input type="checkbox" name="servicios" value="Luz" onchange="verificarServicios()"> Luz</label>
+          <label><input type="checkbox" name="servicios" value="Drenaje" onchange="verificarServicios()"> Drenaje</label>
+        </div>
+        <div id="sinServicios" style="color:red; display: none;">⚠️ No cuenta con algún servicio básico.</div>
+
+        <!-- ESCOLARIDAD -->
+        <label>¿Eres estudiante?</label>
+        <select name="esEstudiante" id="esEstudiante" onchange="mostrarEstudios()" required>
+          <option value="">Seleccione</option>
+          <option value="Sí">Sí</option>
+          <option value="No">No</option>
+        </select>
+
+        <div id="datosEstudiante" style="display: none;">
+          <label for="nivelEstudios">Nivel de estudios:</label>
+          <select name="nivelEstudios" id="nivelEstudios" onchange="actualizarGrados()">
+            <option value="">Seleccione nivel</option>
+            <option value="Kinder">Kinder</option>
+            <option value="Primaria">Primaria</option>
+            <option value="Secundaria">Secundaria</option>
+            <option value="Prepa">Preparatoria</option>
+            <option value="Licenciatura">Licenciatura</option>
+            <option value="Otro">Otro</option>
+          </select>
+          <br><br>
+
+          <label for="grado">Grado:</label>
+          <select name="grado" id="grado">
+            <option value="">Seleccione primero el nivel</option>
+          </select>
+          <br><br>
+
+          <label for="escuela">¿En dónde estudias?</label>
+          <input type="text" name="escuela" id="escuela" />
+          <br><br>
+
+          <label for="comunidad">Comunidad:</label>
+          <input type="text" name="comunidad" id="comunidad" />
+        </div>
+
+        <!-- VIVIENDA -->
+        <h2>Datos de Vivienda</h2>
+        <label>Tipo de vivienda:</label>
+        <select name="tipo_vivienda" id="tipo_vivienda" required onchange="mostrarMontoRenta()">
+          <option value="">Seleccione</option>
+          <option value="Propia">Propia</option>
+          <option value="Prestada">Prestada</option>
+          <option value="Rentada">Rentada</option>
+        </select>
+
+        <div id="montoRentaDiv" style="display: none;">
+          <label>Monto mensual de renta:</label>
+          <input type="number" name="monto_renta" min="0" />
+        </div>
+
+        <label>Ocupación:</label>
+        <input type="text" name="ocupacion" required />
+
+        <label>¿Dónde trabaja o estudia?:</label>
+        <input type="text" name="trabajo_estudio" required />
+
+        <label>Salario mensual estimado:</label>
+        <input type="number" name="salario" min="0" required />
+
+        <label>Estado civil:</label>
+        <select name="estado_civil" required>
+          <option value="">Seleccione</option>
+          <option value="Soltero/a">Soltero/a</option>
+          <option value="Casado/a">Casado/a</option>
+          <option value="Divorciado/a">Divorciado/a</option>
+          <option value="Viudo/a">Viudo/a</option>
+        </select>
+
+        <label>Habitantes en la vivienda:</label>
+        <input type="number" name="habitantes" min="1" required />
+
+        <button type="submit">Enviar formulario</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Aquí va tu JavaScript sin cambios, para mantener funcionalidad
+    const codigosPostales = {
+      "68000": "Oaxaca de Juárez, Oaxaca",
+      "71660": "Santiago Llano Grande Pueblo, Oaxaca",
+      "71661": "Rancho Nuevo, Oaxaca",
+      "71662": "San Francisco el Maguey, Oaxaca",
+    };
+
+    function buscarCP() {
+      const cp = document.getElementById("localidad").value;
+      const ubicacion = codigosPostales[cp];
+      document.getElementById("ubicacion").value = ubicacion || "No encontrado";
+    }
+
+    function verificarEdad() {
+      const fecha = new Date(document.getElementById("fechaNacimiento").value);
+      const hoy = new Date();
+      let edad = hoy.getFullYear() - fecha.getFullYear();
+      const m = hoy.getMonth() - fecha.getMonth();
+      if (m < 0 || (m === 0 && hoy.getDate() < fecha.getDate())) edad--;
+      document.getElementById("ineSection").style.display = edad >= 18 ? "block" : "none";
+    }
+
+    function verificarServicios() {
+      const checks = document.querySelectorAll("#servicios-container input[type='checkbox']");
+      const alguno = Array.from(checks).some(cb => cb.checked);
+      document.getElementById("sinServicios").style.display = alguno ? "none" : "block";
+    }
+
+    function mostrarEstudios() {
+      const es = document.getElementById("esEstudiante").value;
+      document.getElementById("datosEstudiante").style.display = es === "Sí" ? "block" : "none";
+    }
+
+    function actualizarGrados() {
+      const nivel = document.getElementById("nivelEstudios").value;
+      const grado = document.getElementById("grado");
+      grado.innerHTML = "";
+      let opciones = [];
+
+      if (nivel === "Kinder") opciones = ["Primero", "Segundo", "Tercero"];
+      else if (nivel === "Primaria") opciones = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto", "Sexto"];
+      else if (nivel === "Secundaria") opciones = ["Primero", "Segundo", "Tercero"];
+      else if (nivel === "Prepa") opciones = ["Primero", "Segundo", "Tercero"];
+      else if (nivel === "Licenciatura") opciones = ["Primero", "Segundo", "Tercero", "Cuarto", "Quinto"];
+      else if (nivel === "Otro") opciones = ["Ninguno"];
+
+      opciones.forEach(op => {
+        const option = document.createElement("option");
+        option.value = op;
+        option.textContent = op;
+        grado.appendChild(option);
+      });
+    }
+
+    function mostrarMontoRenta() {
+      const tipo = document.getElementById("tipo_vivienda").value;
+      document.getElementById("montoRentaDiv").style.display = tipo === "Rentada" ? "block" : "none";
+    }
+
+    // Evento submit para ejemplo (puedes poner aquí el envío real)
+    document.getElementById("formulario").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Formulario enviado correctamente (implementa envío real).");
+    });
+  </script>
+</body>
+</html>
