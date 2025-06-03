@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registro</title>
+  <link rel="stylesheet" href="estilos.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      color: #333;
+    }
+
+    .banner {
+      width: 100%;
+      height: 60px;
+      background-color: rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      font-size: 1.3rem;
+      text-align: center;
+      backdrop-filter: blur(5px);
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .main-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    .info-panel, .login-panel {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .login-panel {
+      max-width: 400px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .glass-card {
+      backdrop-filter: blur(15px);
+      background: rgba(255, 255, 255, 0.2);
+      padding: 30px;
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-5px);
+    }
+
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .welcome h1 {
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+      font-size: 1.8rem;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-form label {
+      font-weight: 500;
+      color: #444;
+    }
+
+    .login-form input {
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 15px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .login-form input:focus {
+      border-color: #6c63ff;
+      outline: none;
+      box-shadow: 0 0 8px rgba(108, 99, 255, 0.3);
+    }
+
+    .login-form button[type="submit"] {
+      background-color: #6c63ff;
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .login-form button[type="submit"]:hover {
+      background-color: #5149d2;
+      transform: translateY(-2px);
+    }
+
+    .register-link {
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .register-link a {
+      color: #6c63ff;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .register-link a:hover {
+      color: #5149d2;
+      text-decoration: underline;
+    }
+
+    ul {
+      list-style-type: disc;
+      margin-left: 20px;
+      color: #444;
+    }
+
+    ul li {
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .card, .glass-card {
+        padding: 20px;
+      }
+
+      h1, h2 {
+        font-size: 1.3rem;
+      }
+
+      .login-form button[type="submit"] {
+        font-size: 15px;
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="banner">
+    Portal de Registro - Sistema de Gestión
+  </div>
+
+  <div class="main-container">
+    <!-- Sección lateral izquierda -->
+    <div class="info-panel">
+      <div class="glass-card">
+        <h2>¿Por qué registrarte?</h2>
+        <p>Accede a funcionalidades exclusivas, gestiona tus datos de forma personalizada y obtén soporte técnico las 24 horas.</p>
+        <ul>
+          <li>Acceso seguro y rápido</li>
+          <li>Actualizaciones constantes</li>
+          <li>Soporte 24/7</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Formulario de registro -->
+    <div class="login-panel">
+      <div class="glass-card">
+        <div class="welcome">
+          <h1>¡Únete a nosotros!</h1>
+        </div>
+        <form class="login-form" action="login.html" method="post">
+          <h2>Crear cuenta</h2>
+
+          <label for="nombre">Nombre completo</label>
+          <input type="text" id="nombre" name="nombre" required>
+
+          <label for="email">Correo electrónico</label>
+          <input type="email" id="email" name="email" required>
+
+          <label for="password">Contraseña</label>
+          <input type="password" id="password" name="password" required>
+
+          <label for="confirmar">Confirmar contraseña</label>
+          <input type="password" id="confirmar" name="confirmar" required>
+
+          <button type="submit">Registrarse</button>
+          <p class="register-link">¿Ya tienes cuenta? <a href="login.html">Inicia sesión</a></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Sección lateral derecha -->
+    <div class="info-panel">
+      <div class="glass-card">
+        <h2>Consejos de Registro</h2>
+        <p>Usa un correo electrónico válido y crea una contraseña segura que incluya letras, números y símbolos.</p>
+        <p>Te enviaremos un correo de confirmación para activar tu cuenta.</p>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
